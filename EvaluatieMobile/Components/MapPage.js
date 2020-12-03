@@ -2,46 +2,11 @@ import React, { useEffect, useState } from 'react';
 import MapView, { Marker, annotations } from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions,  } from 'react-native';
 
-const getData = () => {
-   fetch('https://opendata.arcgis.com/datasets/99c7168df28142958cbfec31cd633d56_289.geojson')
-    .then(response => response.json())
-    .then((json) => {
-      console.log(json);
-      return json
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-};
-// jsondata = getData();
-// console.log(jsondata);
-
-const MapPage = () => {
+const MapPage = (props) => {
   const [markers, setMarkers] = useState([]);
-  // let markers = [];
-  useEffect(() => {
-    fetch('https://opendata.arcgis.com/datasets/99c7168df28142958cbfec31cd633d56_289.geojson')
-    .then((response) => response.json())
-    .then((json) => {
-      // console.log(json);
-      let marker = []
-      json.features.map(feature => {
-        console.log();
-        marker.push({
-          key: feature.properties.OBJECTID,
-          title: feature.properties.NAAM,
-          latitude: feature.geometry.coordinates[1],
-          longitude: feature.geometry.coordinates[0]
-        })
-      });
-      setMarkers(marker);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }, []);
-  // console.log("marker: ",markers);
-
+  useEffect(()=>{
+    setMarkers(props.data)
+  }, [])
   return (
     <View style={styles.container}>
         <MapView

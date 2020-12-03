@@ -1,16 +1,66 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MapPage  from "./Components/MapPage";
-import MapView from 'react-native-maps';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'; 
+
+const Tab = createBottomTabNavigator();
+
+const Map = () => {
+  return (
+    <View>
+      <Text>dit is de map....</Text>
+    </View>
+  );
+}
+
+const Lijst = () => {
+  return (
+    <View>
+      <Text>dit is de lijst....</Text>
+    </View>
+  );
+}
+
+const Fav = () => {
+  return (
+    <View>
+      <Text>dit zijn de Favorieten....</Text>
+    </View>
+  );
+}
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      
-      <MapPage></MapPage>
-      <Text>data</Text>
-    </View>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen 
+            name="Map" 
+            component={MapPage}
+            options={{tabBarIcon: ({color, size}) => (
+              <FontAwesome5 name="map" size={24} color="black" />
+              )}
+            } 
+          />
+          <Tab.Screen 
+            name="Lijst" 
+            component={Lijst}
+            options={{tabBarIcon: ({color, size}) => (
+              <FontAwesome name="list-ul" size={24} color="black" />
+              )}
+            } 
+          />
+          <Tab.Screen 
+            name="Favorieten" 
+            component={Fav}
+            options={{tabBarIcon: ({color, size}) => (
+              <FontAwesome name="star" size={24} color="black" />
+              )}
+            } 
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
   );
 }
 

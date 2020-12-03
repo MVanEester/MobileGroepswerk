@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 
@@ -6,7 +6,7 @@ const getData = () => {
    fetch('https://opendata.arcgis.com/datasets/99c7168df28142958cbfec31cd633d56_289.geojson')
     .then((response) => response.json())
     .then((json) => {
-      return json;
+      console.log(json);
     })
     .catch((error) => {
       console.error(error);
@@ -16,8 +16,9 @@ const getData = () => {
 // console.log(jsondata);
 
 const MapPage = () => {
-  jsondata = getData();
-  console.log(jsondata);
+  useEffect(() => {
+    let jsondata = getData();
+  }, []);
   return (
     <View style={styles.container}>
         <MapView

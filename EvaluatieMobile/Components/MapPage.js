@@ -16,19 +16,26 @@ const getData = () => {
 // console.log(jsondata);
 
 const MapPage = () => {
+  let jsondata;
   useEffect(() => {
-    let jsondata = getData();
+    jsondata = getData();
   }, []);
+
+  var markers = jsondata.features.map(feature => {
+    feature.geometry.coordinates[0]
+    feature.geometry.coordinates[1]
+  })
   return (
     <View style={styles.container}>
         <MapView
             style={styles.mapStyle}
             initialRegion={{
-                latitude: 50.814604,
-                longitude: 4.386932,
+                latitude: 51.2127037,
+                longitude: 4.409325,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
                 }}
+            
         />
     </View>
   );

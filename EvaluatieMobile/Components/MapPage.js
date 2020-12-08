@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker, annotations } from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions,  } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const MapPage = (props) => {
-  const [markers, setMarkers] = useState([]);
-  useEffect(()=>{
-    setMarkers(props.data)
-  }, [])
+  const [data, setData] = useState([]);
+
+  const loadAsyncData = async () => {
+    try {
+    const jsonValue = await AsyncStorage.getItem('@api_data')
+    setData(jsonValue != null ? JSON.parse(jsonValue) : null);
+    } catch(e) {
+    // error reading value
+    }
+  }    
+
+  useEffect(() => {
+    loadAsyncData();
+  }, [data]);
   return (
     <View style={styles.container}>
         <MapView
@@ -19,7 +30,7 @@ const MapPage = (props) => {
               longitudeDelta: 0.0421,
             }}
           >
-            {markers.map(marker => (
+            {data.map(marker => (
                <MapView.Marker 
                  key={marker.key}
                  coordinate={{latitude: marker.latitude, longitude: marker.longitude}}

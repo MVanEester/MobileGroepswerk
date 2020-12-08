@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
 
@@ -26,17 +27,28 @@ const ListPage = (props) => {
 
 const ScrollDetail = (props) =>{
   const [data, setData] = useState([]);
-  useEffect(()=>{
-    setData(props.data)
-  }, [])
+
+  const loadAsyncData = async () => {
+    try {
+    const jsonValue = await AsyncStorage.getItem('@api_data')
+    setData(jsonValue != null ? JSON.parse(jsonValue) : null);
+    } catch(e) {
+    // error reading value
+    }
+  }    
+
+  useEffect(() => {
+    loadAsyncData();
+  }, [data]);
   return(
     <View>
       <ScrollView>
           {data.map((feature) => {
-            <View key={index}>
-              <Button data={feature} onPress={() => navigation.navigate('Detail', {data: feature})}></Button>
+            return (<View key={feature.key}>
+              <Text>{feature.address}</Text>
+              {/* <Button title={feature.title.ToString()} data={feature} onPress={() => navigation.navigate('Detail', {data: feature})}></Button> */}
             </View>
-          })}
+          )})}
         </ScrollView>
     </View>
   );

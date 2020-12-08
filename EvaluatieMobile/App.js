@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MapPage from "./Components/MapPage";
 import ListPage from "./Components/ListPage";
+import FavoritePage from "./Components/FavoritePage";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
@@ -91,7 +92,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Favorieten"
-          component={Fav}
+          component={FavoritePage}
           options={{
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name="star" size={24} color="black" />

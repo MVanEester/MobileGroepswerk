@@ -44,7 +44,7 @@ const ScrollDetail = (props) => {
   const [data, setData] = useState([]);
   const loadAsyncData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('@api_data')
+      const jsonValue = await AsyncStorage.getItem('@favorite_data')
       setData(jsonValue != null ? JSON.parse(jsonValue) : null);
     } catch (e) {
       // error reading value

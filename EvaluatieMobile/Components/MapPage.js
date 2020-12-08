@@ -10,12 +10,12 @@ const MapPage = (props) => {
 
   const loadAsyncData = async () => {
     try {
-    const jsonValue = await AsyncStorage.getItem('@api_data')
-    setData(jsonValue != null ? JSON.parse(jsonValue) : null);
-    } catch(e) {
-    // error reading value
+      const jsonValue = await AsyncStorage.getItem('@api_data')
+      setData(jsonValue != null ? JSON.parse(jsonValue) : null);
+    } catch (e) {
+      // error reading value
     }
-  }    
+  }
 
   useEffect(() => {
     loadAsyncData();

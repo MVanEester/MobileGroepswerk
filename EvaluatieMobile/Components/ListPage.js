@@ -7,9 +7,19 @@ const Stack = createStackNavigator();
 
 const ListPage = (props) => {
   const [data, setData] = useState([]);
-  useEffect(()=>{
-    setData(props.data)
-  }, [])
+
+  const loadAsyncData = async () => {
+    try {
+    const jsonValue = await AsyncStorage.getItem('@api_data')
+    setData(jsonValue != null ? JSON.parse(jsonValue) : null);
+    } catch(e) {
+    // error reading value
+    }
+  }    
+
+  useEffect(() => {
+    loadAsyncData();
+  }, [data]);
   return (
     <Stack.Navigator>
       <Stack.Screen 

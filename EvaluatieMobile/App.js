@@ -19,7 +19,7 @@ const GetApiData = async () => {
         console.log();
         features.push({
           key: feature.properties.OBJECTID,
-          title: feature.properties.NAAM,
+          title: feature.properties.Straat,
           address: feature.properties.Adres,
           latitude: feature.geometry.coordinates[1],
           longitude: feature.geometry.coordinates[0]

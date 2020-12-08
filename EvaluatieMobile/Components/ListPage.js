@@ -54,9 +54,8 @@ const ScrollDetail = (props) =>{
     <View>
       <ScrollView>
           {data.map((feature) => {
-            return (<View key={feature.key}>
-              <Text>{feature.address}</Text>
-              {/* <Button title={feature.title.ToString()} data={feature} onPress={() => navigation.navigate('Detail', {data: feature})}></Button> */}
+            return (<View key={feature.key} style={{marginTop:2}}>
+              <Button title={feature.title} onPress={() => navigation.navigate('DetailPage', {data: feature})}>{feature.address}</Button>
             </View>
           )})}
         </ScrollView>

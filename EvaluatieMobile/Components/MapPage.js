@@ -32,7 +32,6 @@ const MapPage = (props) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
             <TouchableHighlight
               style={{ ...styles.closeButton, backgroundColor: "#FF0000" }}
               onPress={() => {
@@ -41,14 +40,15 @@ const MapPage = (props) => {
             >
               <Text style={styles.textStyle}>X</Text>
             </TouchableHighlight>
-
+            <Text style={styles.modalText}>{modalData.title}</Text>
+            <Text style={styles.modalText}>{modalData.address}</Text>
             <TouchableHighlight
               style={{ ...styles.detailButton, backgroundColor: "#2196F3" }}
               onPress={() => {
-                // setModalVisible(!modalVisible);
+                navigation.navigate('DetailPage', {data: feature})
               }}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Text style={styles.textStyle}>Detail</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -68,7 +68,10 @@ const MapPage = (props) => {
                  key={marker.key}
                  coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
                 //  title={marker.title} 
-                 onPress={() => {setModalVisible(!modalVisible);}}
+                 onPress={() => {
+                  setModalVisible(!modalVisible);
+                  setModalData(marker);
+                }}
                />
             ))}
         
@@ -115,7 +118,8 @@ const styles = StyleSheet.create({
   detailButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
-    padding: 10,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
     elevation: 2
   },
   closeButton: {

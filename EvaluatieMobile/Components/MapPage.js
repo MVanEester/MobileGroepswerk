@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import MapView, { Marker, annotations } from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions,  } from 'react-native';
+import { StyleSheet, Text, View, Modal,TouchableHighlight, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const MapPage = (props) => {
   const [data, setData] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalData, setModalData] = useState([]);
 
   const loadAsyncData = async () => {
     try {
@@ -20,6 +22,37 @@ const MapPage = (props) => {
   }, [data]);
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Hello World!</Text>
+            <TouchableHighlight
+              style={{ ...styles.closeButton, backgroundColor: "#FF0000" }}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>X</Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              style={{ ...styles.detailButton, backgroundColor: "#2196F3" }}
+              onPress={() => {
+                // setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
         <MapView
           style={styles.mapStyle}
           mapType="satellite"
@@ -34,7 +67,8 @@ const MapPage = (props) => {
                <MapView.Marker 
                  key={marker.key}
                  coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
-                 title={marker.title}
+                //  title={marker.title} 
+                 onPress={() => {setModalVisible(!modalVisible);}}
                />
             ))}
         
@@ -55,5 +89,49 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     flex: 1, width: 350
-  },    
+  },   
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 390
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 5,
+    paddingHorizontal: 110,
+    paddingVertical: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  detailButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  closeButton: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+    padding: 10,
+    borderRadius: 5,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  } 
 });

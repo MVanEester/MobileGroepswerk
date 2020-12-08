@@ -2,10 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Card, Title, Paragraph } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { BorderlessButton } from 'react-native-gesture-handler';
+
 
 const Stack = createStackNavigator();
 
-const ListPage = (props) => {
+const ListPage = (navigation, props, route) => {
   const [data, setData] = useState([]);
 
   const loadAsyncData = async () => {
@@ -37,7 +41,6 @@ const ListPage = (props) => {
 
 const ScrollDetail = (props) => {
   const [data, setData] = useState([]);
-
   const loadAsyncData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('@api_data')
@@ -50,12 +53,15 @@ const ScrollDetail = (props) => {
   useEffect(() => {
     loadAsyncData();
   }, [data]);
+
+  let navigation = useNavigation();
+
   return (
     <View>
       <ScrollView>
         {data.map((feature) => {
           return (<View key={feature.key} style={{ marginTop: 2 }}>
-            <Button title={feature.title} onPress={() => navigation.navigate('DetailPage', { data: feature })}>{feature.address}</Button>
+            <Button title={feature.title} onPress={() => navigation.navigate('Detail', { data: feature })}>{feature.address}</Button>
           </View>
           )
         })}
@@ -65,10 +71,18 @@ const ScrollDetail = (props) => {
 }
 
 const DetailPage = ({ route }) => {
-  const color = route.params.data
+  const feature = route.params.data
   return (
     <View>
-
+      <Card style={styles.detailStyle}>
+        <Title>{feature.title}</Title>
+        <Paragraph style={styles.itemStyle}>Adres:</Paragraph>
+        <Paragraph>{feature.address}</Paragraph>
+        <Paragraph style={styles.itemStyle}>latitude:</Paragraph>
+        <Paragraph>{feature.latitude}</Paragraph>
+        <Paragraph style={styles.itemStyle}>longitude:</Paragraph>
+        <Paragraph>{feature.longitude}</Paragraph>
+      </Card>
     </View>
   );
 }
@@ -81,5 +95,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  detailStyle: {
+    paddingLeft: 5,
+  },
+
+  itemStyle: {
+    fontWeight: "bold",
   },
 });

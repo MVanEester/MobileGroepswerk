@@ -40,6 +40,7 @@ const MapPage = (props) => {
             >
               <Text style={styles.textStyle}>X</Text>
             </TouchableHighlight>
+            <Text></Text>
             <Text style={styles.modalText}>{modalData.title}</Text>
             <Text style={styles.modalText}>{modalData.address}</Text>
             <TouchableHighlight
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     margin: 1,
     backgroundColor: "white",
     borderRadius: 5,
-    paddingHorizontal: 110,
+    paddingHorizontal: 10,
     paddingVertical: 20,
     alignItems: "center",
     shadowColor: "#000",

@@ -6,10 +6,12 @@ import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
-const addFavorite = async (value) => {
+const addFavorite = async (feature) => {
     try {
-    const jsonValue = JSON.stringify(value)
-    await AsyncStorage.setItem('@favorite_data', jsonValue)
+      var favorites = AsyncStorage.getItem('@favorite_data');
+      favorites = JSON.parse(favorites);
+      favorites.push(feature);
+      await AsyncStorage.setItem('countries', JSON.stringify(favorites));
     } catch (e) {
     // saving error
     }
@@ -20,7 +22,7 @@ const checkFavorites = async (key) => {
     const jsonValue = await AsyncStorage.getItem('@favorite_data')
     if (jsonValue != null) {
         JSON.parse(jsonValue)
-        let result = jsonValue.filter(value => Value.key == key)
+        let result = jsonValue.filter(value => value.key == key)
         console.log(result);
         if (result != null) {
             return true;

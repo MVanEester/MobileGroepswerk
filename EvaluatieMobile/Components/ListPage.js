@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import DetailPage from "./DetailPage";
 
 
 const Stack = createStackNavigator();
@@ -70,22 +71,22 @@ const ScrollDetail = (props) => {
   );
 }
 
-const DetailPage = ({ route }) => {
-  const feature = route.params.data
-  return (
-    <View>
-      <Card style={styles.detailStyle}>
-        <Title>{feature.title}</Title>
-        <Paragraph style={styles.itemStyle}>Adres:</Paragraph>
-        <Paragraph>{feature.address}</Paragraph>
-        <Paragraph style={styles.itemStyle}>latitude:</Paragraph>
-        <Paragraph>{feature.latitude}</Paragraph>
-        <Paragraph style={styles.itemStyle}>longitude:</Paragraph>
-        <Paragraph>{feature.longitude}</Paragraph>
-      </Card>
-    </View>
-  );
-}
+// const DetailPage = ({ route }) => {
+//   const feature = route.params.data
+//   return (
+//     <View>
+//       <Card style={styles.detailStyle}>
+//         <Title>{feature.title}</Title>
+//         <Paragraph style={styles.itemStyle}>Adres:</Paragraph>
+//         <Paragraph>{feature.address}</Paragraph>
+//         <Paragraph style={styles.itemStyle}>latitude:</Paragraph>
+//         <Paragraph>{feature.latitude}</Paragraph>
+//         <Paragraph style={styles.itemStyle}>longitude:</Paragraph>
+//         <Paragraph>{feature.longitude}</Paragraph>
+//       </Card>
+//     </View>
+//   );
+// }
 
 export default ListPage;
 

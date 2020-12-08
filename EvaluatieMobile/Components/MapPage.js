@@ -2,8 +2,43 @@ import React, { useEffect, useState} from 'react';
 import MapView, { Marker, annotations } from 'react-native-maps';
 import { StyleSheet, Text, View, Modal,TouchableHighlight, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import DetailPage from "./DetailPage";
 
-const MapPage = (props) => {
+const Stack = createStackNavigator();
+
+const MapPage = (navigation, props, route) => {
+  const [data, setData] = useState([]);
+
+  const loadAsyncData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@api_data')
+      setData(jsonValue != null ? JSON.parse(jsonValue) : null);
+    } catch (e) {
+      // error reading value
+    }
+  }
+
+  useEffect(() => {
+    loadAsyncData();
+  }, [data]);
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="buurtfietsenstallingen"
+        children={() => (
+          <Map data={data} />
+        )} />
+      <Stack.Screen
+        name="Detail"
+        component={DetailPage} options={{ title: '' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+const Map = (props) => {
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalData, setModalData] = useState([]);
@@ -16,6 +51,7 @@ const MapPage = (props) => {
       // error reading value
     }
   }
+  let navigation = useNavigation();
 
   useEffect(() => {
     loadAsyncData();
@@ -45,7 +81,8 @@ const MapPage = (props) => {
             <TouchableHighlight
               style={{ ...styles.detailButton, backgroundColor: "#2196F3" }}
               onPress={() => {
-                navigation.navigate('DetailPage', {data: feature})
+                navigation.navigate('Detail', {data: modalData});
+                setModalVisible(!modalVisible);
               }}
             >
               <Text style={styles.textStyle}>Detail</Text>

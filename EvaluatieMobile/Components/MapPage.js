@@ -1,7 +1,8 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import MapView, { Marker, annotations } from 'react-native-maps';
-import { StyleSheet, Text, View, Modal,TouchableHighlight, Alert } from 'react-native';
+import { StyleSheet, Text, View, Modal, TouchableHighlight, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const MapPage = (props) => {
   const [data, setData] = useState([]);
@@ -32,7 +33,9 @@ const MapPage = (props) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <MaterialCommunityIcons name="bike" size={24} color="black" />
             <TouchableHighlight
+
               style={{ ...styles.closeButton, backgroundColor: "#FF0000" }}
               onPress={() => {
                 setModalVisible(!modalVisible);
@@ -46,7 +49,7 @@ const MapPage = (props) => {
             <TouchableHighlight
               style={{ ...styles.detailButton, backgroundColor: "#2196F3" }}
               onPress={() => {
-                navigation.navigate('DetailPage', {data: feature})
+                navigation.navigate('DetailPage', { data: feature })
               }}
             >
               <Text style={styles.textStyle}>Detail</Text>
@@ -54,29 +57,29 @@ const MapPage = (props) => {
           </View>
         </View>
       </Modal>
-        <MapView
-          style={styles.mapStyle}
-          mapType="satellite"
-          initialRegion={{
-              latitude: 51.2127037,
-              longitude: 4.409325,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
+      <MapView
+        style={styles.mapStyle}
+        mapType="satellite"
+        initialRegion={{
+          latitude: 51.2127037,
+          longitude: 4.409325,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        {data.map(marker => (
+          <MapView.Marker
+            key={marker.key}
+            coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+            //  title={marker.title} 
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              setModalData(marker);
             }}
-          >
-            {data.map(marker => (
-               <MapView.Marker 
-                 key={marker.key}
-                 coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
-                //  title={marker.title} 
-                 onPress={() => {
-                  setModalVisible(!modalVisible);
-                  setModalData(marker);
-                }}
-               />
-            ))}
-        
-        </MapView>
+          />
+        ))}
+
+      </MapView>
 
     </View>
   );
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     flex: 1, width: 350
-  },   
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -138,6 +141,6 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 10,
     textAlign: "left",
-    
-  } 
+
+  }
 });

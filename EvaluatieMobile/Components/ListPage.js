@@ -10,65 +10,66 @@ const ListPage = (props) => {
 
   const loadAsyncData = async () => {
     try {
-    const jsonValue = await AsyncStorage.getItem('@api_data')
-    setData(jsonValue != null ? JSON.parse(jsonValue) : null);
-    } catch(e) {
-    // error reading value
+      const jsonValue = await AsyncStorage.getItem('@api_data')
+      setData(jsonValue != null ? JSON.parse(jsonValue) : null);
+    } catch (e) {
+      // error reading value
     }
-  }    
+  }
 
   useEffect(() => {
     loadAsyncData();
   }, [data]);
   return (
     <Stack.Navigator>
-      <Stack.Screen 
-        name="buurtfietsenstallingen" 
+      <Stack.Screen
+        name="buurtfietsenstallingen"
         children={() => (
-          <ScrollDetail data={data}/>
-        )}/>
-      <Stack.Screen 
-        name="Detail" 
-        component={DetailPage} options={{title: ''}}
+          <ScrollDetail data={data} />
+        )} />
+      <Stack.Screen
+        name="Detail"
+        component={DetailPage} options={{ title: '' }}
       />
     </Stack.Navigator>
   );
 }
 
-const ScrollDetail = (props) =>{
+const ScrollDetail = (props) => {
   const [data, setData] = useState([]);
 
   const loadAsyncData = async () => {
     try {
-    const jsonValue = await AsyncStorage.getItem('@api_data')
-    setData(jsonValue != null ? JSON.parse(jsonValue) : null);
-    } catch(e) {
-    // error reading value
+      const jsonValue = await AsyncStorage.getItem('@api_data')
+      setData(jsonValue != null ? JSON.parse(jsonValue) : null);
+    } catch (e) {
+      // error reading value
     }
-  }    
+  }
 
   useEffect(() => {
     loadAsyncData();
   }, [data]);
-  return(
+  return (
     <View>
       <ScrollView>
-          {data.map((feature) => {
-            return (<View key={feature.key} style={{marginTop:2}}>
-              <Button title={feature.title} onPress={() => navigation.navigate('DetailPage', {data: feature})}>{feature.address}</Button>
-            </View>
-          )})}
-        </ScrollView>
+        {data.map((feature) => {
+          return (<View key={feature.key} style={{ marginTop: 2 }}>
+            <Button title={feature.title} onPress={() => navigation.navigate('DetailPage', { data: feature })}>{feature.address}</Button>
+          </View>
+          )
+        })}
+      </ScrollView>
     </View>
   );
 }
 
-const DetailPage = ({route}) =>{
+const DetailPage = ({ route }) => {
   const color = route.params.data
-  return(
+  return (
     <View>
 
-  </View>
+    </View>
   );
 }
 
@@ -80,5 +81,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },  
+  },
 });

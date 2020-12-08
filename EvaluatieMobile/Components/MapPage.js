@@ -1,10 +1,11 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import MapView, { Marker, annotations } from 'react-native-maps';
-import { StyleSheet, Text, View, Modal,TouchableHighlight, Alert } from 'react-native';
+import { StyleSheet, Text, View, Modal, TouchableHighlight, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import DetailPage from "./DetailPage";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 
@@ -68,7 +69,9 @@ const Map = (props) => {
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <MaterialCommunityIcons name="bike" size={24} color="black" />
             <TouchableHighlight
+
               style={{ ...styles.closeButton, backgroundColor: "#FF0000" }}
               onPress={() => {
                 setModalVisible(!modalVisible);
@@ -76,6 +79,7 @@ const Map = (props) => {
             >
               <Text style={styles.textStyle}>X</Text>
             </TouchableHighlight>
+            <Text></Text>
             <Text style={styles.modalText}>{modalData.title}</Text>
             <Text style={styles.modalText}>{modalData.address}</Text>
             <TouchableHighlight
@@ -90,29 +94,29 @@ const Map = (props) => {
           </View>
         </View>
       </Modal>
-        <MapView
-          style={styles.mapStyle}
-          mapType="satellite"
-          initialRegion={{
-              latitude: 51.2127037,
-              longitude: 4.409325,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
+      <MapView
+        style={styles.mapStyle}
+        mapType="satellite"
+        initialRegion={{
+          latitude: 51.2127037,
+          longitude: 4.409325,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+      >
+        {data.map(marker => (
+          <MapView.Marker
+            key={marker.key}
+            coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+            //  title={marker.title} 
+            onPress={() => {
+              setModalVisible(!modalVisible);
+              setModalData(marker);
             }}
-          >
-            {data.map(marker => (
-               <MapView.Marker 
-                 key={marker.key}
-                 coordinate={{latitude: marker.latitude, longitude: marker.longitude}}
-                //  title={marker.title} 
-                 onPress={() => {
-                  setModalVisible(!modalVisible);
-                  setModalData(marker);
-                }}
-               />
-            ))}
-        
-        </MapView>
+          />
+        ))}
+
+      </MapView>
 
     </View>
   );
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     flex: 1, width: 350
-  },   
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -137,10 +141,10 @@ const styles = StyleSheet.create({
     marginTop: 390
   },
   modalView: {
-    margin: 20,
+    margin: 1,
     backgroundColor: "white",
     borderRadius: 5,
-    paddingHorizontal: 110,
+    paddingHorizontal: 10,
     paddingVertical: 20,
     alignItems: "center",
     shadowColor: "#000",
@@ -172,7 +176,8 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  } 
+    marginBottom: 10,
+    textAlign: "left",
+
+  }
 });

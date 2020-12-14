@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import MapPage from "./Components/MapPage";
 import ListPage from "./Components/ListPage";
 import FavoritePage from "./Components/FavoritePage";
@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-community/async-storage';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -49,6 +50,7 @@ const Fav = () => {
 }
 
 export default function App() {
+
   const [data, setData] = useState([]);
 
   const loadAsyncData = async () => {

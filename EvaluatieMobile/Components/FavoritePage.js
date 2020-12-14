@@ -15,8 +15,8 @@ const FavoritePage = (navigation, props, route) => {
 
   const loadAsyncData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('@favorite_data')
-      setData(jsonValue != null ? JSON.parse(jsonValue) : null);
+      const jsonValue = await AsyncStorage.getItem('@favorites')
+      setData(jsonValue != null ? JSON.parse(jsonValue) : []);
     } catch (e) {
       // error reading value
     }
@@ -30,7 +30,7 @@ const FavoritePage = (navigation, props, route) => {
       <Stack.Screen
         name="buurtfietsenstallingen"
         children={() => (
-          <ScrollDetail data={data} />
+          <ScrollDetail/>
         )} />
       <Stack.Screen
         name="Detail"
@@ -42,10 +42,15 @@ const FavoritePage = (navigation, props, route) => {
 
 const ScrollDetail = (props) => {
   const [data, setData] = useState([]);
+  const [notFound, setNotFound] = useState(true)
   const loadAsyncData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('@favorite_data')
+      const jsonValue = await AsyncStorage.getItem('@favorites')
       setData(jsonValue != null ? JSON.parse(jsonValue) : null);
+      
+      if (jsonValue != null) {
+        setNotFound(false)
+      }
     } catch (e) {
       // error reading value
     }
@@ -60,33 +65,18 @@ const ScrollDetail = (props) => {
   return (
     <View>
       <ScrollView>
-        {data.map((feature) => {
+        {notFound ?
+        <Text>no favorites found</Text>:
+        (data.map((feature) => {
           return (<View key={feature.key} style={{ marginTop: 2 }}>
             <Button title={feature.title} onPress={() => navigation.navigate('Detail', { data: feature })}>{feature.address}</Button>
           </View>
           )
-        })}
+        }))}
       </ScrollView>
     </View>
   );
 }
-
-// const DetailPage = ({ route }) => {
-//   const feature = route.params.data
-//   return (
-//     <View>
-//       <Card style={styles.detailStyle}>
-//         <Title>{feature.title}</Title>
-//         <Paragraph style={styles.itemStyle}>Adres:</Paragraph>
-//         <Paragraph>{feature.address}</Paragraph>
-//         <Paragraph style={styles.itemStyle}>latitude:</Paragraph>
-//         <Paragraph>{feature.latitude}</Paragraph>
-//         <Paragraph style={styles.itemStyle}>longitude:</Paragraph>
-//         <Paragraph>{feature.longitude}</Paragraph>
-//       </Card>
-//     </View>
-//   );
-// }
 
 export default FavoritePage;
 

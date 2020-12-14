@@ -14,16 +14,19 @@ const DetailPage = ({ route }) => {
     
   const addFavorite = async (feature) => {
     try {
-      let asyncData = await AsyncStorage.getItem('@favorite_data')
+      let asyncData = await AsyncStorage.getItem('@favorites')
       if (asyncData == null) {
-        return await AsyncStorage.setItem('@favorite_data', JSON.stringify([feature]));
+        setFavorite(true);
+        setLoad(false);
+        return await AsyncStorage.setItem('@favorites', JSON.stringify([feature]));
       }
       var favorites = JSON.parse(asyncData);
       console.log("Favorite",favorites);
       console.log("addFavorite",feature);
       favorites.push(feature);
-      await AsyncStorage.setItem('@favorite_data', JSON.stringify(favorites));
+      await AsyncStorage.setItem('@favorites', JSON.stringify(favorites));
       setFavorite(true);
+      setLoad(false);
     } catch (e) {
       console.log("addfav:",e);
     }
@@ -31,7 +34,7 @@ const DetailPage = ({ route }) => {
 
   const removeFavorite = async (feature) => {
     try {
-      var asyncData = await AsyncStorage.getItem('@favorite_data');
+      var asyncData = await AsyncStorage.getItem('@favorites');
       let favorites = JSON.parse(asyncData);
       let index = 0;
       for (index; index < favorites.length; index++) {
@@ -42,8 +45,9 @@ const DetailPage = ({ route }) => {
       if (index > -1) {
         favorites.splice(index, 1);
       }
-      await AsyncStorage.setItem('@favorite_data', JSON.stringify(favorites));
+      await AsyncStorage.setItem('@favorites', JSON.stringify(favorites));
       setFavorite(false);
+      setLoad(false);
     } catch (e) {
       console.log("removefav:", e);
     }
@@ -51,7 +55,8 @@ const DetailPage = ({ route }) => {
 
   const checkFavorites = async (key) => {
     try {
-    const jsonValue = await AsyncStorage.getItem('@favorite_data')
+    const jsonValue = await AsyncStorage.getItem('@favorites')
+    console.log("check",jsonValue);
     if (jsonValue != null) {
         let favorites = JSON.parse(jsonValue)
         let result = favorites.filter(value => value.key == key)
@@ -86,8 +91,8 @@ const DetailPage = ({ route }) => {
         <Paragraph>{feature.longitude}</Paragraph>
         {load ? <Button title="Loading"></Button>:
         (favorite ? 
-        <Button title="Verwijder uit favorieten" onPress={() => {removeFavorite(feature);}}></Button>:
-        <Button title="Toevoegen aan favorieten" onPress={() => {addFavorite(feature);}}></Button>)}
+        <Button title="Verwijder uit favorieten" onPress={() => {setLoad(true);removeFavorite(feature);}}></Button>:
+        <Button title="Toevoegen aan favorieten" onPress={() => {setLoad(true);addFavorite(feature);}}></Button>)}
       </Card>
     </View>
   );

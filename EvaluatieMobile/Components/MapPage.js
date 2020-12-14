@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import DetailPage from "./DetailPage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as Location from 'expo-location';
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,9 @@ const Map = (props) => {
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalData, setModalData] = useState([]);
+  const [currentLocation, setLocation] = useState([null]);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [load, setLoad] = useState(true);
 
   const loadAsyncData = async () => {
     try {
@@ -52,11 +56,34 @@ const Map = (props) => {
       // error reading value
     }
   }
+
+  const getLocation = async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied');
+      return;
+    }
+
+    let currentLocation = await Location.getCurrentPositionAsync({});
+    setLocation(currentLocation);
+
+    setLoad(false)
+  }
+
   let navigation = useNavigation();
 
   useEffect(() => {
     loadAsyncData();
+    getLocation();
   }, [data]);
+
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (currentLocation) {
+    text = JSON.stringify(currentLocation);
+  }
+
   return (
     <View style={styles.container}>
       <Modal
@@ -85,7 +112,7 @@ const Map = (props) => {
             <TouchableHighlight
               style={{ ...styles.detailButton, backgroundColor: "#2196F3" }}
               onPress={() => {
-                navigation.navigate('Detail', {data: modalData});
+                navigation.navigate('Detail', { data: modalData });
                 setModalVisible(!modalVisible);
               }}
             >
@@ -94,30 +121,36 @@ const Map = (props) => {
           </View>
         </View>
       </Modal>
-      <MapView
-        style={styles.mapStyle}
-        mapType="satellite"
-        initialRegion={{
-          latitude: 51.2127037,
-          longitude: 4.409325,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {data.map(marker => (
-          <MapView.Marker
-            key={marker.key}
-            coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-            //  title={marker.title} 
-            onPress={() => {
-              setModalVisible(!modalVisible);
-              setModalData(marker);
-            }}
+      { load ? <Text>loading...</Text> : 
+        <MapView
+          style={styles.mapStyle}
+          mapType="satellite"
+          initialRegion={{
+            latitude: currentLocation.coords.latitude,
+            longitude: currentLocation.coords.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          {data.map(marker => (
+            <MapView.Marker
+              key={marker.key}
+              coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+              //  title={marker.title} 
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                setModalData(marker);
+              }}
+            />
+          ))}
+          <Marker
+            key="Eigen Locatie"
+            coordinate={{ latitude: currentLocation.coords.latitude, longitude: currentLocation.coords.longitude }}
+            title="Eigen Locatie"
+            description="U bevindt zich hier."
           />
-        ))}
-
-      </MapView>
-
+        </MapView>
+      }
     </View>
   );
 }

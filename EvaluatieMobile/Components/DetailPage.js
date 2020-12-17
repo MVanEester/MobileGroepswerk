@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { BorderlessButton } from 'react-native-gesture-handler';
+import * as FileSystem from 'expo-file-system';
 
 const DetailPage = ({ route }) => {
     const [favorite, setFavorite] = useState();
     const [load, setLoad] = useState(true);
+    const [imageUri, setImageUri] = useState(null)
     const feature = route.params.data;
+    let navigation = useNavigation();
 
-    
+  const getImageUri = () => {
+    let uri = `${FileSystem.documentDirectory}${feature.key}.jpg`
+    console.log(uri);
+    setImageUri(uri);
+  }
+  
   const addFavorite = async (feature) => {
     try {
       let asyncData = await AsyncStorage.getItem('@favorites')
@@ -56,7 +64,6 @@ const DetailPage = ({ route }) => {
   const checkFavorites = async (key) => {
     try {
     const jsonValue = await AsyncStorage.getItem('@favorites')
-    console.log("check",jsonValue);
     if (jsonValue != null) {
         let favorites = JSON.parse(jsonValue)
         let result = favorites.filter(value => value.key == key)
@@ -78,9 +85,11 @@ const DetailPage = ({ route }) => {
 
   useEffect(() => {
     checkFavorites(feature.key).then(setFavorite)
+    getImageUri()
   }, []);
   return (
     <View>
+      <Image source={{uri: imageUri}} style={styles.imageStyle}></Image>
       <Card style={styles.detailStyle}>
         <Title>{feature.title}</Title>
         <Paragraph style={styles.itemStyle}>Adres:</Paragraph>
@@ -89,6 +98,7 @@ const DetailPage = ({ route }) => {
         <Paragraph>{feature.latitude}</Paragraph>
         <Paragraph style={styles.itemStyle}>longitude:</Paragraph>
         <Paragraph>{feature.longitude}</Paragraph>
+        <Button title="Neem een foto" onPress={() => navigation.navigate('Camera', { data: feature })}></Button>
         {load ? <Button title="Loading"></Button>:
         (favorite ? 
         <Button title="Verwijder uit favorieten" onPress={() => {setLoad(true);removeFavorite(feature);}}></Button>:
@@ -107,12 +117,14 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
-  
     detailStyle: {
       paddingLeft: 5,
     },
-  
     itemStyle: {
       fontWeight: "bold",
+    },
+    imageStyle: {
+      height: 150,
+      alignSelf: 'stretch'
     },
 });

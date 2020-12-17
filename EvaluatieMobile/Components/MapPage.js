@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import DetailPage from "./DetailPage";
+import CameraPage from "./CameraPage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
@@ -34,7 +35,11 @@ const MapPage = (navigation, props, route) => {
         )} />
       <Stack.Screen
         name="Detail"
-        component={DetailPage} options={{ title: '' }}
+        component={DetailPage}
+      />
+      <Stack.Screen
+        name="Camera"
+        component={CameraPage}
       />
     </Stack.Navigator>
   );
@@ -66,7 +71,6 @@ const Map = (props) => {
 
     let currentLocation = await Location.getCurrentPositionAsync({});
     setLocation(currentLocation);
-
     setLoad(false)
   }
 

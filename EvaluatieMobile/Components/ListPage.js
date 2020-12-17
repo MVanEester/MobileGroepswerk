@@ -6,6 +6,7 @@ import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { BorderlessButton } from 'react-native-gesture-handler';
 import DetailPage from "./DetailPage";
+import CameraPage from "./CameraPage";
 
 
 const Stack = createStackNavigator();
@@ -34,7 +35,11 @@ const ListPage = (navigation, props, route) => {
         )} />
       <Stack.Screen
         name="Detail"
-        component={DetailPage} options={{ title: '' }}
+        component={DetailPage}
+      />
+      <Stack.Screen
+        name="Camera"
+        component={CameraPage}
       />
     </Stack.Navigator>
   );

@@ -71,7 +71,7 @@ const ScrollDetail = (props) => {
     <View>
       <ScrollView>
         {notFound ?
-        <Text>no favorites found</Text>:
+        <Text style={styles.textStyle}>Geen favorieten gevonden.</Text>:
         (data.map((feature) => {
           return (<View key={feature.key} style={{ marginTop: 2 }}>
             <Button title={feature.title} onPress={() => navigation.navigate('Detail', { data: feature })}>{feature.address}</Button>
@@ -99,5 +99,10 @@ const styles = StyleSheet.create({
 
   itemStyle: {
     fontWeight: "bold",
+  },
+
+  textStyle: {
+    textAlign: 'center',
+    margin: 100,
   },
 });

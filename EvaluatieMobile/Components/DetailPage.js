@@ -95,7 +95,9 @@ const DetailPage = ({ route }) => {
         <Paragraph>{feature.latitude}</Paragraph>
         <Paragraph style={styles.itemStyle}>longitude:</Paragraph>
         <Paragraph>{feature.longitude}</Paragraph>
+        <Paragraph></Paragraph>
         <Button title="Neem een foto" onPress={() => navigation.navigate('Camera', { data: feature })}></Button>
+        <Paragraph></Paragraph>
         {load ? <Button title="Loading"></Button>:
         (favorite ? 
         <Button title="Verwijder uit favorieten" onPress={() => {setLoad(true);removeFavorite(feature);}}></Button>:

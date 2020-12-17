@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import MapPage from "./Components/MapPage";
 import ListPage from "./Components/ListPage";
 import FavoritePage from "./Components/FavoritePage";
@@ -17,7 +17,6 @@ const GetApiData = async () => {
       .then((json) => {
         let features = [];
         json.features.map(feature => {
-          console.log();
           features.push({
             key: feature.properties.OBJECTID,
             title: feature.properties.Straat,
@@ -41,20 +40,6 @@ const GetApiData = async () => {
 GetApiData();
 
 export default function App() {
-  const [data, setData] = useState([]);
-
-  const loadAsyncData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@api_data')
-      setData(jsonValue != null ? JSON.parse(jsonValue) : null);
-    } catch (e) {
-      // error reading value
-    }
-  }
-
-  useEffect(() => {
-    loadAsyncData();
-  }, [data]);
   return (
     <NavigationContainer>
       <Tab.Navigator>

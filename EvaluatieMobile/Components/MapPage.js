@@ -125,7 +125,6 @@ const Map = () => {
             <MapView.Marker
               key={marker.key}
               coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-              //  title={marker.title} 
               onPress={() => {
                 setModalVisible(!modalVisible);
                 setModalData(marker);

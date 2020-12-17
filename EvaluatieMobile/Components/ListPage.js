@@ -29,6 +29,8 @@ const ListPage = () => {
 
 const ScrollDetail = () => {
   const [data, setData] = useState([]);
+  let navigation = useNavigation();
+  
   const loadAsyncData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('@api_data')
@@ -41,9 +43,6 @@ const ScrollDetail = () => {
   useEffect(() => {
     loadAsyncData();
   }, [data]);
-
-  let navigation = useNavigation();
-
   return (
     <View>
       <ScrollView>

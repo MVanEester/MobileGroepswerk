@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { Camera } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
@@ -10,13 +10,11 @@ export default function CameraPage({route}) {
   let navigation = useNavigation();
   const feature = route.params.data;
   let camera;
+
   const takePicture = async() => {
       try {
         let picture = await camera.takePictureAsync()
-        console.log(picture.uri);
-        console.log(`${FileSystem.documentDirectory}${feature.key}`);
         await FileSystem.moveAsync({from: picture.uri, to: `${FileSystem.documentDirectory}${feature.key}.jpg`})
-        console.log("picture moved");
         navigation.goBack()
       } catch (error) {
           console.log(error);

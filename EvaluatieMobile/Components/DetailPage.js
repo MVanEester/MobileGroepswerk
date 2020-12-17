@@ -16,7 +16,6 @@ const DetailPage = ({ route }) => {
 
   const getImageUri = () => {
     let uri = `${FileSystem.documentDirectory}${feature.key}.jpg`
-    console.log(uri);
     setImageUri(uri);
   }
   
@@ -29,8 +28,6 @@ const DetailPage = ({ route }) => {
         return await AsyncStorage.setItem('@favorites', JSON.stringify([feature]));
       }
       var favorites = JSON.parse(asyncData);
-      console.log("Favorite",favorites);
-      console.log("addFavorite",feature);
       favorites.push(feature);
       await AsyncStorage.setItem('@favorites', JSON.stringify(favorites));
       setFavorite(true);

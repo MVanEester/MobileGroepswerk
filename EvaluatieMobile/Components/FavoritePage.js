@@ -2,37 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import DetailPage from "./DetailPage";
 import CameraPage from "./CameraPage";
 
 
 const Stack = createStackNavigator();
 
-const FavoritePage = (navigation, props, route) => {
-  const [data, setData] = useState([]);
-
-  const loadAsyncData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@favorites')
-      setData(jsonValue != null ? JSON.parse(jsonValue) : []);
-    } catch (e) {
-      // error reading value
-    }
-  }
-
-  useEffect(() => {
-    loadAsyncData();
-  }, [data]);
+const FavoritePage = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="buurtfietsenstallingen"
-        children={() => (
-          <ScrollDetail/>
-        )} />
+        component={ScrollDetail}
+        />
       <Stack.Screen
         name="Detail"
         component={DetailPage}
@@ -45,7 +28,7 @@ const FavoritePage = (navigation, props, route) => {
   );
 }
 
-const ScrollDetail = (props) => {
+const ScrollDetail = () => {
   const [data, setData] = useState([]);
   const [notFound, setNotFound] = useState(true)
   const loadAsyncData = async () => {
@@ -86,21 +69,6 @@ const ScrollDetail = (props) => {
 export default FavoritePage;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  detailStyle: {
-    paddingLeft: 5,
-  },
-
-  itemStyle: {
-    fontWeight: "bold",
-  },
-
   textStyle: {
     textAlign: 'center',
     margin: 100,

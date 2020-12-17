@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker, annotations } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet, Text, View, Modal, TouchableHighlight, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -11,28 +11,13 @@ import * as Location from 'expo-location';
 
 const Stack = createStackNavigator();
 
-const MapPage = (navigation, props, route) => {
-  const [data, setData] = useState([]);
-
-  const loadAsyncData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@api_data')
-      setData(jsonValue != null ? JSON.parse(jsonValue) : null);
-    } catch (e) {
-      // error reading value
-    }
-  }
-
-  useEffect(() => {
-    loadAsyncData();
-  }, [data]);
+const MapPage = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="buurtfietsenstallingen"
-        children={() => (
-          <Map data={data} />
-        )} />
+        component={Map}
+       />
       <Stack.Screen
         name="Detail"
         component={DetailPage}
@@ -45,7 +30,7 @@ const MapPage = (navigation, props, route) => {
   );
 }
 
-const Map = (props) => {
+const Map = () => {
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalData, setModalData] = useState([]);

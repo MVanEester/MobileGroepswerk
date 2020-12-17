@@ -1,38 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
+import { View, ScrollView, Button } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import DetailPage from "./DetailPage";
 import CameraPage from "./CameraPage";
 
-
 const Stack = createStackNavigator();
 
-const ListPage = (navigation, props, route) => {
-  const [data, setData] = useState([]);
-
-  const loadAsyncData = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('@api_data')
-      setData(jsonValue != null ? JSON.parse(jsonValue) : null);
-    } catch (e) {
-      // error reading value
-    }
-  }
-
-  useEffect(() => {
-    loadAsyncData();
-  }, [data]);
+const ListPage = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="buurtfietsenstallingen"
-        children={() => (
-          <ScrollDetail data={data} />
-        )} />
+        component={ScrollDetail}
+      />
       <Stack.Screen
         name="Detail"
         component={DetailPage}
@@ -45,7 +27,7 @@ const ListPage = (navigation, props, route) => {
   );
 }
 
-const ScrollDetail = (props) => {
+const ScrollDetail = () => {
   const [data, setData] = useState([]);
   const loadAsyncData = async () => {
     try {
@@ -76,38 +58,5 @@ const ScrollDetail = (props) => {
   );
 }
 
-// const DetailPage = ({ route }) => {
-//   const feature = route.params.data
-//   return (
-//     <View>
-//       <Card style={styles.detailStyle}>
-//         <Title>{feature.title}</Title>
-//         <Paragraph style={styles.itemStyle}>Adres:</Paragraph>
-//         <Paragraph>{feature.address}</Paragraph>
-//         <Paragraph style={styles.itemStyle}>latitude:</Paragraph>
-//         <Paragraph>{feature.latitude}</Paragraph>
-//         <Paragraph style={styles.itemStyle}>longitude:</Paragraph>
-//         <Paragraph>{feature.longitude}</Paragraph>
-//       </Card>
-//     </View>
-//   );
-// }
-
 export default ListPage;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  detailStyle: {
-    paddingLeft: 5,
-  },
-
-  itemStyle: {
-    fontWeight: "bold",
-  },
-});

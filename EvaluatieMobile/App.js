@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
 import MapPage from "./Components/MapPage";
 import ListPage from "./Components/ListPage";
 import FavoritePage from "./Components/FavoritePage";
@@ -41,16 +40,7 @@ const GetApiData = async () => {
 
 GetApiData();
 
-const Fav = () => {
-  return (
-    <View>
-      <Text>dit zijn de Favorieten....</Text>
-    </View>
-  );
-}
-
 export default function App() {
-
   const [data, setData] = useState([]);
 
   const loadAsyncData = async () => {
@@ -70,9 +60,7 @@ export default function App() {
       <Tab.Navigator>
         <Tab.Screen
           name="Map"
-          children={() => (
-            <MapPage data={data} />
-          )}
+          component={MapPage}
           options={{
             tabBarIcon: ({ color, size }) => (
               <FontAwesome5 name="map" size={24} color="black" />
@@ -82,9 +70,7 @@ export default function App() {
         />
         <Tab.Screen
           name="Lijst"
-          children={() => (
-            <ListPage data={data} />
-          )}
+          component={ListPage}
           options={{
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name="list-ul" size={24} color="black" />
@@ -106,12 +92,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

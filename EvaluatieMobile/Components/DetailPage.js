@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Button, Image } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { StyleSheet, View, Button, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Card, Title, Paragraph } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 import * as FileSystem from 'expo-file-system';
 
 const DetailPage = ({ route }) => {
